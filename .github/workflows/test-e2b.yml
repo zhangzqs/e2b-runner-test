@@ -1,0 +1,24 @@
+name: Test E2B Self-Hosted Runner
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: [self-hosted, e2b]
+    steps:
+      - name: Check runner info
+        run: |
+          echo "=== Runner Info ==="
+          echo "Runner OS: ${{ runner.os }}"
+          echo "Runner Arch: ${{ runner.arch }}"
+          echo "Runner Name: ${{ runner.name }}"
+          echo "Hostname: $(hostname)"
+          echo "OS Release: $(cat /etc/os-release 2>/dev/null | head -5 || uname -a)"
+          echo "CPU: $(nproc) cores"
+          echo "Memory: $(free -h 2>/dev/null | head -2 || echo 'N/A')"
+          echo "Disk: $(df -h / | tail -1)"
+          echo "=== Environment ==="
+          env | sort | head -30
